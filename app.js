@@ -52,3 +52,48 @@ function printToPage(){
         document.getElementById("guests").innerHTML = all_names;
     }
 }
+
+function sendRequest(url, cFunction) {
+    var xhttp;
+    xhttp=new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      cFunction(this);
+    }
+    };
+    xhttp.open("POST", url, true);
+    xhttp.send();
+}
+
+function myFunction(xhttp) {
+    var my_res = JSON.parse(xhttp.responseText).visitors[0].firstName;
+    document.getElementById("demo").innerHTML = my_res;
+}
+
+function addNamePHP() {
+    var fname = document.getElementById("fname").value.toString();
+    //console.log("First Name = " + fname);
+    if (fname.length == 0) {
+        document.getElementById("guests").innerHTML = "";
+    return;
+  } else {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+          //printResults(this.responseText);
+          document.getElementById("guests").innerHTML = this.responseText;
+      }
+    };
+    xmlhttp.open("POST", "app.php?q=" + fname, true);
+    xmlhttp.send();
+  }
+}
+
+function printResults(res) {
+    var my_res = JSON.parse(res).visitors;
+    var res_str = "";
+    for(var i = 0; i < my_res.length; i++) {
+        res_str = res_str + "<br>" + my_res[i].firstName + " has visited " + my_res[i].count + " times.";
+    }
+    document.getElementById("demo").innerHTML = res_str;
+}

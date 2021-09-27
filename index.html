@@ -7,14 +7,15 @@
   </head>
   <body onload="printToPage()">
     <h1>Welcome to our little guest list web app</h1>
-    <form>
+    <form action="">
         <label for="fname">First name:</label><br>
         <input type="text" id="fname" name="fname" value="John"><br><br>
         <button type="button" onclick="addName()">Add to guest list</button>
-    </form> 
-    
+        <button type="button" onclick="addNamePHP()">Use PHP</button>
+    </form>
     <h3>These people already visited:</h3>
     <p id="guests"></p>
+    <p id="demo"></p>
 
   </body>
   
