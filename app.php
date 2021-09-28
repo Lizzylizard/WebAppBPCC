@@ -29,7 +29,7 @@
             $data_as_php[$fname] = 1;
         }
 
-        $myfile2 = fopen("data.json", "w") or die("Unable to open file!");
+        $myfile2 = fopen("data.json", "w") or die("Unable to open file! While writing.");
         fwrite($myfile2, json_encode($data_as_php));
         fclose($myfile2);
 
