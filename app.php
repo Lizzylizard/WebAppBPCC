@@ -1,61 +1,50 @@
 <?php
-    $myfile = fopen("data.json", "r") or die("Unable to open file!");
-    $jsonobj = fread($myfile, filesize("data.json"));
-    fclose($myfile);
-    $data_as_php = json_decode($jsonobj, true);
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "test_db";
 
-    $res_str = "";
-    $isInArray = 0;
-
+    // Create connection
+    $conn = new mysqli($servername, $username, $password, $database);
 
     if (array_key_exists('fname', $_POST)) {
         $fname = $_POST['fname'];
     } else {
-        $fname = "Kein Name";
+        $fname = "";
     }
 
-    if (strlen($fname) > 0) {
+    // Check connection
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+    echo "Connected successfully";
 
-        foreach($data_as_php as $key => $value) {
-            # echo $key . " => " . $value . "<br>";
-            if ($key == $fname) {
-                $isInArray = 1;
-                $data_as_php[$key]++;
+    if(!empty($fname)) {
+        $sql = "SELECT * FROM test_db.Guests WHERE name =?";
+        $stmt = mysqli_stmt_init($con);
+        if(mysqli_stmt_prepare($stmt, $sql)) {
+            mysqli_stmt_bind_param($stmt, "s", $fname);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_store_result($stmt);
+            $resultCheck = mysqli_stmt_num_rows($stmt);
+
+            if($resultCheck == 0) {
+                #neuer name
+                $one = 1;
+                $sql = "INSERT into test_db.Guests (firstname, count) VALUES (?,?)";
+                if(mysqli_stmt_prepare($stmt, $sql)) {
+                   mysqli_stmt_bind_param($stmt, "si", $fname, $one);
+                   mysqli_stmt_execute($stmt);
+                }
+            } else {
+                #inkrementieren
+                $sql = "UPDATE test_db.Guests SET count = count + 1 WHERE firstname = ?";
+                if(mysqli_stmt_prepare($stmt, $sql)) {
+                    mysqli_stmt_bind_param($stmt, "s", $fname);
+                    mysqli_stmt_execute($stmt);
+                }
             }
-            $res_str .= $key . " has visited " . $value . " times.<br>";
         }
-
-        if ($isInArray == 0) {
-            $data_as_php[$fname] = 1;
-        }
-
-        $myfile2 = fopen("data.json", "w") or die("Unable to open file! While writing.");
-        fwrite($myfile2, json_encode($data_as_php));
-        fclose($myfile2);
-
-        echo $res_str;
-
-    } else {
-    foreach($data_as_php as $key => $value) {
-        $res_str .= $key . " has visited " . $value . " times.<br>";
-        }
-        echo $res_str;
     }
 
-
-
-
-
-
-
-
-    # $new_entry = json_encode(array("Felix"=>9));
-    # $new_entry = json_encode($data_as_php->append("Felix:9"));
-    # echo $new_entry;
-
-    # $myfile2 = fopen("data.json", "a") or die("Unable to open file!");
-    # fwrite($myfile2, $new_entry);
-    # fclose($myfile2);
-
-    # {"Elisabeth":10,"David":12,"Axel":4, "Sebastian":2}
 ?>
