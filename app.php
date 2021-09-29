@@ -39,6 +39,7 @@
             echo " :  ";
             echo $row['count'];       // Print the entire row data
             echo nl2br("\n");
+
 }
 
 

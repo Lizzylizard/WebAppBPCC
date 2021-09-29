@@ -5,17 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bonuspoints</title>
   </head>
-  <body onload="addNamePHP()">
+  <body>
     <h1>Welcome to our little guest list web app</h1>
     <form action="">
         <label for="fname">First name:</label><br>
         <input type="text" id="fname" name="fname" value=""><br><br>
-        <button type="button" onclick="addName()">Add to guest list</button>
-        <button type="button" onclick="addNamePHP()">Use PHP</button>
+
+        <label for="size">Size:</label><br>
+        <input type="text" id="size" name="size" value=""><br><br>
+
+        <label for="weight">Weight:</label><br>
+        <input type="text" id="weight" name="weight" value=""><br><br>
+
+        <button type="button" onclick="bmi()">Calculate BMI</button>
     </form>
-    <h3>These people already visited:</h3>
-    <p id="guests"></p>
-    <p id="demo"></p>
+    <h3 id="name"></h3>
+    <p id="res"></p>
+    <p id="bewertung"></p>
 
   </body>
   <script src="app.js"></script>
